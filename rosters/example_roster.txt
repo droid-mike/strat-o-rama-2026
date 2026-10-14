@@ -1,0 +1,8 @@
+# One player per line.
+# Optional TEAM|Player Name syntax overrides the team printed on the card.
+# This is useful when a player's full-season data includes multiple teams.
+
+CLE|José Ramírez
+CLE|Steven Kwan
+CHW|Andrew Benintendi
+CHW|Kyle Teel

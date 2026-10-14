@@ -1,18 +1,11 @@
 {
-  "name": "stat-o-rama",
+  "name": "strat-o-rama-modern-bref",
   "version": "1.0.0",
-  "description": "predicting strat-o-matic cards",
+  "description": "Modern Baseball-Reference compatibility fork of the MIT-licensed strat-o-rama card generator",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "validate": "node validate.js",
+    "sheets": "node make_sheets.js players print_sheets_6up.pdf"
   },
-  "author": "Matthew Butler",
-  "license": "MIT",
-  "dependencies": {
-    "convert-csv-to-json": "0.0.14",
-    "i": "^0.3.7",
-    "lodash": "^4.17.23",
-    "mkdirp": "^0.5.1",
-    "pdfkit": "^0.14.0"
-  }
+  "license": "MIT"
 }
