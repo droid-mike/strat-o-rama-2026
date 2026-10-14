@@ -1,8 +1,8 @@
-# Strat-O-Rama — Modern Baseball-Reference Compatibility Fork
+# Strat-O-Rama — 2026 Baseball-Reference Compatibility Fork
 
-A modernized fork/adaptation of Matthew Butler's MIT-licensed **strat-o-rama** card generator.
+A modernized fork/adaptation of Matthew Butler's MIT-licensed **strat-o-rama** basic/hybrid strategy card generator.
 
-This version was updated to work with current Baseball-Reference CSV layouts and to make the generated cards easier to print and use at the table.
+This version was updated to work with 2026 Baseball-Reference CSV layouts and to make the generated cards easier to print and use at the table.
 
 > **Important:** These are unofficial, fan-generated cards based on an independent approximation of a Strat-style Basic card system. This project is not affiliated with, endorsed by, or sponsored by Strat-O-Matic Media, LLC.
 
