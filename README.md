@@ -101,6 +101,46 @@ By default, a pitcher gets a pitching card. To generate that pitcher's batting c
 node app.js "Tanner Bibee" -b
 ```
 
+### Position Players Who Also Pitch
+
+Some position players may also have pitching statistics from occasional mop-up appearances. By default, Strat-O-Rama treats these players as position players and generates their normal batter card.
+
+For example:
+
+```bash
+node app.js "austin hedges"
+```
+
+creates:
+
+```text
+players/austin_hedges.pdf
+```
+
+with his normal catcher/batter card.
+
+If you specifically want the pitching version of a position player, use the `-p` option:
+
+```bash
+node app.js "austin hedges" -p
+```
+
+This creates a separate file:
+
+```text
+players/austin_hedges_pitcher.pdf
+```
+
+so the pitching card does not overwrite the player's normal batting card.
+
+True pitchers still generate pitcher cards by default:
+
+```bash
+node app.js "gavin williams"
+```
+
+The generator also attempts to identify whether a pitcher was primarily used as a starter or reliever based on his season usage.
+
 ## Generate a regular-season team
 
 Use the Baseball-Reference team code:
