@@ -19,5 +19,5 @@ function one(name,dir,override){
 if(team.teamList[arg]){
   const dir=slug(team.teamList[arg]); const roster=team.playerList(arg); let made=0;
   for(const name of roster) if(one(name,dir,arg)) made++;
-  console.log(`Generated ${made} cards for ${arg}. Note: team mode includes anyone who appeared for the team in the regular-season fielding table.`);
+  console.log(`Generated ${made} cards for ${arg}. Note: team mode includes anyone who appeared for the team in the regular-season batting, fielding, or pitching tables.`);
 }else one(arg,'players',teamOverride);

@@ -71,8 +71,14 @@ function pitcherCardStats(record, against) {
 
 function getPlayer(token, pitcherBattingFlag) {
   const bundle = findBundle(token);
-  if (!bundle || !bundle.fielding) return undefined;
-  const positions = modernPosToOld(bundle.fielding.Pos || bundle.fielding.PosSummary).split('-');
+  if (!bundle) return undefined;
+
+  // Some players (especially DH-only players) may have no row in the
+  // Baseball-Reference fielding export.  Fall back to the batting row for
+  // position information so they can still receive a card.
+  const positionRow = bundle.fielding || bundle.batting || bundle.pitching;
+  if (!positionRow) return undefined;
+  const positions = modernPosToOld(positionRow.Pos || positionRow.PosSummary).split('-');
   const isPitcher = positions.includes('P') && pitcherBattingFlag !== '-b';
   if (isPitcher) {
     if (!bundle.pitching || !bundle.against) return undefined;

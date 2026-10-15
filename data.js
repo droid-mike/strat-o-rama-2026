@@ -116,12 +116,19 @@ function findBundle(token) {
 function teamRoster(team) {
   const seen = new Set();
   const result = [];
-  for (const r of fielding) {
-    if (r.Tm !== team) continue;
-    const id = r._id || r._nameKey;
-    if (seen.has(id)) continue;
-    seen.add(id);
-    result.push({ id: r._id, name: r.Name });
+
+  // Do not build a team roster from fielding alone.  DH-only players can be
+  // absent from the fielding export, while pitchers may be represented most
+  // reliably in the pitching export.  Use the union of the regular-season
+  // batting, fielding, and pitching tables instead.
+  for (const table of [batting, fielding, pitching]) {
+    for (const r of table) {
+      if (r.Tm !== team || AGG_TEAMS.test(r.Tm)) continue;
+      const id = r._id || r._nameKey;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      result.push({ id: r._id, name: r.Name });
+    }
   }
   return result;
 }
