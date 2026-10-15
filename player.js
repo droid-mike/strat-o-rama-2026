@@ -65,7 +65,7 @@ function pitcherCardStats(record, against) {
     som_errors:120,
     som_balks: clamp0(safeDiv(n(record.BK)*290,ip))*20,
     som_wild: clamp0(safeDiv(n(record.WP)*200,ip))*20,
-    role: (n(record.SV) > 0 && n(record.GS) < n(record.G)/2) ? 'relief' : 'starter'
+    role: (n(record.GS) > 0 && n(record.GS) >= n(record.G)/2) ? 'starter' : 'relief'
   };
 }
 
@@ -79,7 +79,15 @@ function getPlayer(token, pitcherBattingFlag) {
   const positionRow = bundle.fielding || bundle.batting || bundle.pitching;
   if (!positionRow) return undefined;
   const positions = modernPosToOld(positionRow.Pos || positionRow.PosSummary).split('-');
-  const isPitcher = positions.includes('P') && pitcherBattingFlag !== '-b';
+
+  // Default a player with any genuine non-pitching position to a batter card,
+  // even if he also logged mop-up innings on the mound. This keeps players
+  // such as Austin Hedges (C/P) from being misclassified as pitchers.
+  // -p explicitly requests the pitching card; -b explicitly requests batting.
+  const hasNonPitchingPosition = positions.some(pos => pos && pos !== 'P');
+  const forcePitcher = pitcherBattingFlag === '-p';
+  const forceBatter = pitcherBattingFlag === '-b';
+  const isPitcher = !forceBatter && (forcePitcher || (!hasNonPitchingPosition && positions.includes('P')));
   if (isPitcher) {
     if (!bundle.pitching || !bundle.against) return undefined;
     return { name:bundle.name, id:bundle.id, teamCode:bundle.teamCode, positions, isPitcher:true, ...pitcherCardStats(bundle.pitching, bundle.against) };

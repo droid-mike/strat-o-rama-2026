@@ -5,16 +5,19 @@ function slug(s){return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,''
 
 const args=process.argv.slice(2);
 const arg=args[0];
-const battingFlag=args.includes('-b') ? '-b' : undefined;
+const roleFlag=args.includes('-p') ? '-p' : (args.includes('-b') ? '-b' : undefined);
 const teamAt=args.indexOf('--team');
 const teamOverride=teamAt>=0 ? String(args[teamAt+1]||'').toUpperCase() : undefined;
-if(!arg){console.log('Usage: node app.js "Player Name" [-b] [--team CHW]  OR  node app.js CLE');process.exit(1);}
+if(!arg){console.log('Usage: node app.js "Player Name" [-p|-b] [--team CHW]  OR  node app.js CLE');process.exit(1);}
 console.log(`League batting averages from data: AL ${getPlayer.leagueAverages.AL.toFixed(3)}, NL ${getPlayer.leagueAverages.NL.toFixed(3)}, MLB ${getPlayer.leagueAverages.MLB.toFixed(3)}`);
 
 function one(name,dir,override){
-  const p=getPlayer(name,battingFlag); if(!p){console.warn(`Could not build card for ${name}`);return false;}
+  const p=getPlayer(name,roleFlag); if(!p){console.warn(`Could not build card for ${name}`);return false;}
   if(override && team.teamList[override]) p.teamCode=override;
-  const c=getCard(p); const outDir=path.resolve(__dirname,dir); fs.mkdirSync(outDir,{recursive:true}); const file=path.join(outDir,`${slug(p.name)}.pdf`); renderCard(p,c,file); console.log(`${p.name}: ${file}`); return true;
+  const c=getCard(p); const outDir=path.resolve(__dirname,dir); fs.mkdirSync(outDir,{recursive:true});
+  const pitcherVariant = roleFlag === '-p' && Array.isArray(p.positions) && p.positions.some(pos => pos !== 'P');
+  const base = `${slug(p.name)}${pitcherVariant ? '_pitcher' : ''}`;
+  const file=path.join(outDir,`${base}.pdf`); renderCard(p,c,file); console.log(`${p.name}: ${file}`); return true;
 }
 if(team.teamList[arg]){
   const dir=slug(team.teamList[arg]); const roster=team.playerList(arg); let made=0;
